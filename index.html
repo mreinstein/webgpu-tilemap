@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title class="titleText">Web GPU tile renderer</title>
+        <meta name="description" content="WebGPU tile renderer" />
+        <meta name="author" content="Mike Reinstein" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+
+        <style>
+            
+            body {
+                padding: 0;
+                margin: 0;
+            }
+
+            img {
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -webkit-crisp-edges;
+                image-rendering: pixelated;
+                image-rendering: crisp-edges;
+            }
+
+            .viewport-container {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            canvas {
+                background-color: green;
+                border: none;
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -webkit-crisp-edges;
+                image-rendering: pixelated;
+                image-rendering: crisp-edges;
+            }
+
+            canvas::-webkit-scrollbar {
+                display: none;
+            }
+
+        </style>
+    </head>
+    <body>
+        
+        <div class="viewport-container">
+            <canvas id="viewport" width="800" height="600"></canvas>
+        </div>
+
+<script type="module">
+import Game            from './src/Game.js'
+import * as Renderer   from './src/Renderer.js'
+import rendererSystem  from './src/system-renderer.js'
+import { ECS }         from './src/deps.js'
+
+
+async function main () {
+
+    const canvas = document.querySelector('canvas')
+    Game.renderer = await Renderer.createRenderer(canvas)
+    const world = ECS.createWorld()
+    ECS.addSystem(world, rendererSystem)
+    //ECS.addSystem(world, animationSystem)
+    Game.world = world
+
+    const gameLoop = function () {
+        tick(Game)
+        requestAnimationFrame(gameLoop)
+    }
+
+    requestAnimationFrame(gameLoop)
+}
+
+
+function tick (context) {
+    const newTime = performance.now()
+    const frameTime = newTime - context.lastFrameTime
+    context.lastFrameTime = newTime
+    ECS.update(context.world, frameTime)
+    ECS.cleanup(context.world)
+}
+
+
+
+main()
+
+
+</script>
+
+    </body>
+</html>
