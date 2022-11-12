@@ -177,11 +177,7 @@ export async function createRenderer (canvas) {
         triangleMesh,
         spritesMaterial,
         tilesMaterial,
-        layers: [
-            {
-
-            }
-        ],
+        tilesMaterial2,
 
         // used in the color attachments of renderpass
         clearValue: { r: 0.5, g: 0.0, b: 0.25, a: 1.0 },

@@ -39,8 +39,7 @@ export default function rendererSystem (world) {
         const textureView = context.getCurrentTexture().createView()
 
 
-        // draw layer 2
-        const renderpass2 = commandEncoder.beginRenderPass({
+        const renderpass = commandEncoder.beginRenderPass({
             colorAttachments: [
                 {
                     view: textureView,
@@ -51,35 +50,23 @@ export default function rendererSystem (world) {
             ]
         })
 
-        renderpass2.setPipeline(pipeline)
-        renderpass2.setBindGroup(0, bindGroup2)
-        renderpass2.setVertexBuffer(0, triangleMesh.buffer)
-
-        // vertexCount, instanceCount, baseVertexIdx, baseInstanceIdx
-        renderpass2.draw(6, 1, 0, 0)
-        renderpass2.end()
+        renderpass.setPipeline(pipeline)
+        renderpass.setVertexBuffer(0, triangleMesh.buffer)
 
 
         // draw layer 1
-        const renderpass = commandEncoder.beginRenderPass({
-            colorAttachments: [
-                {
-                    view: textureView,
-                    clearValue: renderer.clearValue,
-                    loadOp: 'load',
-                    storeOp: 'store'
-                }
-            ]
-        })
+        renderpass.setBindGroup(0, bindGroup2)
+        // vertexCount, instanceCount, baseVertexIdx, baseInstanceIdx
+        renderpass.draw(6, 1, 0, 0)
 
-        renderpass.setPipeline(pipeline)
+
+        // draw layer 2
         renderpass.setBindGroup(0, bindGroup)
-        renderpass.setVertexBuffer(0, triangleMesh.buffer)
-
         // vertexCount, instanceCount, baseVertexIdx, baseInstanceIdx
         renderpass.draw(6, 1, 0, 1)
-        renderpass.end()
 
+
+        renderpass.end()
 
         device.queue.submit([ commandEncoder.finish() ])
     }
