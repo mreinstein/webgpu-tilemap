@@ -38,7 +38,6 @@ export async function createMaterial (device, url) {
     const samplerDescriptor = {
         addressModeU: 'repeat', // repeat | clamp-to-edge
         addressModeV: 'repeat', // repeat | clamp-to-edge
-        
         magFilter: 'nearest',
         minFilter: 'nearest',
         mipmapFilter: 'nearest',

@@ -52,8 +52,8 @@ fn fs_main (@location(0) TexCoord: vec2<f32>, @location(1) PixelCoord: vec2<f32>
 	var tile: vec4<f32> = textureSample(tileTexture, tileSampler, TexCoord);
 
 	// TODO: this throws a console warning, "control flow depends on non-uniform value"
-	// I assume this is just letting us know that branching based on some frequently changing value
-	// might be a serious performance pit?s
+	// I assume this is just letting us know that branching based on some unpredictable input value
+	// might be a serious performance pit?
 	if (tile.x == 1.0 && tile.y == 1.0) {
 		discard;
 	}

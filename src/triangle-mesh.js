@@ -1,27 +1,15 @@
 export function createTriangleMesh (device) {
 
     const vertices = new Float32Array([
-   //    x     y    u     v  
+       //x   y  u  v  
         -1, -1, 0, 1,
          1, -1, 1, 1,
          1,  1, 1, 0,
 
-   // triangle 2 (2nd half of quad)
+       // triangle 2 (2nd half of quad)
         -1, -1, 0, 1,
          1,  1, 1, 0,
         -1,  1, 0, 0
-
-        /*
-    //    x     y    u     v
-        -1.0, -1.0, 0.0, 0.0, 
-        -1.0,  1.0, 0.0, 1.0,
-         1.0,  1.0, 1.0, 1.0,
-
-        // triangle 2 (2nd half of quad)
-        -1.0, -1.0, 0.0, 0.0,
-         1.0,  1.0, 1.0, 1.0,
-         1.0, -1.0, 1.0, 0.0,
-         */
     ])
 
     const usage = GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST
