@@ -12,6 +12,7 @@ export default function rendererSystem (world) {
         const pipeline = renderer.pipeline
         const uniformBuffer = renderer.uniformBuffer
         const bindGroup = renderer.bindGroup
+        const bindGroup1 = renderer.bindGroup1
         const bindGroup2 = renderer.bindGroup2
         const triangleMesh = renderer.triangleMesh
 
@@ -53,15 +54,17 @@ export default function rendererSystem (world) {
         renderpass.setPipeline(pipeline)
         renderpass.setVertexBuffer(0, triangleMesh.buffer)
 
+        // common stuff; the transform data and the sprite texture
+        renderpass.setBindGroup(1, bindGroup)
 
-        // draw layer 1
+        // tile layer 1
         renderpass.setBindGroup(0, bindGroup2)
         // vertexCount, instanceCount, baseVertexIdx, baseInstanceIdx
         renderpass.draw(6, 1, 0, 0)
 
 
-        // draw layer 2
-        renderpass.setBindGroup(0, bindGroup)
+        // tile layer 2
+        renderpass.setBindGroup(0, bindGroup1)
         // vertexCount, instanceCount, baseVertexIdx, baseInstanceIdx
         renderpass.draw(6, 1, 0, 1)
 

@@ -7,11 +7,14 @@ struct TransformData {
 	inverseTileSize: f32
 };
 
-@binding(0) @group(0) var<uniform> transformUBO: TransformData;
-@binding(1) @group(0) var spriteTexture: texture_2d<f32>;
-@binding(2) @group(0) var spriteSampler: sampler;
-@binding(3) @group(0) var tileTexture: texture_2d<f32>;
-@binding(4) @group(0) var tileSampler: sampler;
+// individual tile texture
+@binding(0) @group(0) var tileTexture: texture_2d<f32>;
+@binding(1) @group(0) var tileSampler: sampler;
+
+// common to all tile layers
+@binding(0) @group(1) var<uniform> transformUBO: TransformData;
+@binding(1) @group(1) var spriteTexture: texture_2d<f32>;
+@binding(2) @group(1) var spriteSampler: sampler;
 
 
 struct Fragment {

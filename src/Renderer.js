@@ -30,7 +30,7 @@ export async function createRenderer (canvas) {
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
     })
 
-    const bindGroupLayout = device.createBindGroupLayout({
+    const spriteBindGroupLayout = device.createBindGroupLayout({
         entries: [
             {
                 binding: 0,
@@ -46,22 +46,12 @@ export async function createRenderer (canvas) {
                 binding: 2,
                 visibility: GPUShaderStage.FRAGMENT,
                 sampler: { }
-            },
-            {
-                binding: 3,
-                visibility: GPUShaderStage.FRAGMENT,
-                texture:  { }
-            },
-            {
-                binding: 4,
-                visibility: GPUShaderStage.FRAGMENT,
-                sampler: { }
             }
         ],
     })
 
     const bindGroup = device.createBindGroup({
-        layout: bindGroupLayout,
+        layout: spriteBindGroupLayout,
         entries: [
             {
                 binding: 0,
@@ -76,13 +66,34 @@ export async function createRenderer (canvas) {
             {
                 binding: 2,
                 resource: spritesMaterial.sampler
+            }
+        ]
+    })
+
+    const bindGroupLayout = device.createBindGroupLayout({
+        entries: [
+            {
+                binding: 0,
+                visibility: GPUShaderStage.FRAGMENT,
+                texture:  { }
             },
             {
-                binding: 3,
+                binding: 1,
+                visibility: GPUShaderStage.FRAGMENT,
+                sampler: { }
+            }
+        ],
+    })
+
+    const bindGroup1 = device.createBindGroup({
+        layout: bindGroupLayout,
+        entries: [
+            {
+                binding: 0,
                 resource: tilesMaterial.view
             },
             {
-                binding: 4,
+                binding: 1,
                 resource: tilesMaterial.sampler
             }
         ]
@@ -93,31 +104,17 @@ export async function createRenderer (canvas) {
         entries: [
             {
                 binding: 0,
-                resource: {
-                    buffer: uniformBuffer
-                }
-            },
-            {
-                binding: 1,
-                resource: spritesMaterial.view
-            },
-            {
-                binding: 2,
-                resource: spritesMaterial.sampler
-            },
-            {
-                binding: 3,
                 resource: tilesMaterial2.view
             },
             {
-                binding: 4,
+                binding: 1,
                 resource: tilesMaterial2.sampler
             }
         ]
     })
 
     const pipelineLayout = device.createPipelineLayout({
-        bindGroupLayouts: [ bindGroupLayout ]
+        bindGroupLayouts: [ bindGroupLayout, spriteBindGroupLayout ]
     })
 
     const pipeline = device.createRenderPipeline({
@@ -169,8 +166,9 @@ export async function createRenderer (canvas) {
 
         // pipeline objects
         uniformBuffer,
-        bindGroup,  // layer 1
-        bindGroup2, // layer 2
+        bindGroup,   // sprite texture, transform ubo
+        bindGroup1,  // tile layer 1
+        bindGroup2,  // tile layer 2
         pipeline,
 
         // assets
