@@ -8,8 +8,9 @@ You can see this running at https://webgpu-tilemap.vercel.app/
 
 
 ## todo
-* move `scrollScale` to tile layer instance data
-* move `inverseSpriteTextureSize` to tile layer instance data
+* move `scrollScale` to instance data
+* move `inverseSpriteTextureSize` to instance data
+* rename `bindGroup`, `bindGroup1`, and `bindGroup1` terrible, just terrible. Maybe `spriteBindGroup`, `tileBindGroup1`, `tileBindGroup2` ?
 
 
 ## references
