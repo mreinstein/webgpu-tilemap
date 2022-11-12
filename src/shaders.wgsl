@@ -31,17 +31,18 @@ fn vs_main (@builtin(instance_index) i_id : u32,
 
 	var output : Fragment;
 
-	var viewOffset : vec2<f32>;
+	var scrollScale : vec2<f32>;
 
 	if (i_id == 0) {
-		viewOffset = transformUBO.viewOffset * vec2<f32>(0.6, 0.6);
+		scrollScale = vec2<f32>(0.6, 0.6);
 	} else {
-		viewOffset = transformUBO.viewOffset * vec2<f32>(1.0, 1.0);
+		scrollScale = vec2<f32>(1.0, 1.0);
 	}
+
+	var viewOffset : vec2<f32> = transformUBO.viewOffset * scrollScale;
 
 	// from Brandon's webgl-tile shader
 	output.PixelCoord = (vertexTexCoord * transformUBO.viewportSize) + viewOffset;
-	//output.PixelCoord = (vertexTexCoord * transformUBO.viewportSize) + transformUBO.viewOffset;
 	output.TexCoord = output.PixelCoord * transformUBO.inverseTileTextureSize * transformUBO.inverseTileSize;
     output.Position = vec4<f32>(vertexPosition, 0.0, 1.0);
 
