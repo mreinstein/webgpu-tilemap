@@ -1,8 +1,13 @@
-import Game from './Game.js'
+import Game     from './Game.js'
+import { vec2 } from './deps.js'
 
 
 export default function rendererSystem (world) {
     
+    // tmp variables that are re-used to avoid allocating more memory each frame
+    const buf = new Float32Array(10)
+
+
     const onUpdate = function (dt) {
 
         const renderer = Game.renderer
@@ -20,21 +25,27 @@ export default function rendererSystem (world) {
         const x = (Math.sin(elapsed / 2000) * 0.5 + 0.5) * 128
         const y = (Math.sin(elapsed / 5000) * 0.5 + 0.5) * 170
 
-        const tileScale = 2.0
+        const tileScale = 2
 
         //const layer = { scrollScaleX: 0.6, scrollScaleY: 0.6 }
 
-        const viewOffset = [ Math.floor(x * tileScale /** layer.scrollScaleX*/), Math.floor(y * tileScale /* * layer.scrollScaleY*/ ) ]
-        const viewportSize = [ 800 / tileScale, 600 / tileScale ]
-        const inverseTileTextureSize = [ 1/42, 1/34 ]
-        const inverseSpriteTextureSize = [ 1/128, 1/128 ]
-
         const tileSize = 16.0
-        const inverseTileSize = 1.0 / tileSize
 
-        const arr = new Float32Array([ viewOffset[0], viewOffset[1], viewportSize[0], viewportSize[1], inverseTileTextureSize[0], inverseTileTextureSize[1], inverseSpriteTextureSize[0], inverseSpriteTextureSize[1], tileSize, inverseTileSize ])
-    
-        device.queue.writeBuffer(uniformBuffer, 0, arr, 0, 10)
+        // viewOffset.  [0, 0] is the top left corner of the level
+        buf[0] = Math.floor(x * tileScale)  // viewoffset[0] 
+        buf[1] =  Math.floor(y * tileScale) // viewOffset[1]
+
+        buf[2] = 800 / tileScale            // viewportSize[0]
+        buf[3] = 600 / tileScale            // viewportSize[1]
+        buf[4] = 1/42                       // inverseTileTextureSize[0]
+        buf[5] = 1/34                       // inverseTileTextureSize[1]
+
+        buf[6] = 1/128                      // inverseSpriteTextureSize[0]
+        buf[7] = 1/128                      // inverseSpriteTextureSize[1]
+        buf[8] = tileSize
+        buf[9] = 1.0 / tileSize             // inverseTileSize
+
+        device.queue.writeBuffer(uniformBuffer, 0, buf, 0, 10)
 
         const commandEncoder = device.createCommandEncoder()
         const textureView = context.getCurrentTexture().createView()
