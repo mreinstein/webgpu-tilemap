@@ -50,7 +50,7 @@ export async function createRenderer (canvas) {
         ],
     })
 
-    const bindGroup = device.createBindGroup({
+    const spriteBindGroup = device.createBindGroup({
         layout: spriteBindGroupLayout,
         entries: [
             {
@@ -85,7 +85,7 @@ export async function createRenderer (canvas) {
         ],
     })
 
-    const bindGroup1 = device.createBindGroup({
+    const tileBindGroup1 = device.createBindGroup({
         layout: bindGroupLayout,
         entries: [
             {
@@ -99,7 +99,7 @@ export async function createRenderer (canvas) {
         ]
     })
 
-    const bindGroup2 = device.createBindGroup({
+    const tileBindGroup2 = device.createBindGroup({
         layout: bindGroupLayout,
         entries: [
             {
@@ -166,9 +166,9 @@ export async function createRenderer (canvas) {
 
         // pipeline objects
         uniformBuffer,
-        bindGroup,   // sprite texture, transform ubo
-        bindGroup1,  // tile layer 1
-        bindGroup2,  // tile layer 2
+        spriteBindGroup,   // sprite texture, transform ubo
+        tileBindGroup1,  // tile layer 1
+        tileBindGroup2,  // tile layer 2
         pipeline,
 
         // assets

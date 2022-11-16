@@ -1,5 +1,4 @@
-import Game     from './Game.js'
-import { vec2 } from './deps.js'
+import Game from './Game.js'
 
 
 export default function rendererSystem (world) {
@@ -16,9 +15,9 @@ export default function rendererSystem (world) {
         const context = renderer.context
         const pipeline = renderer.pipeline
         const uniformBuffer = renderer.uniformBuffer
-        const bindGroup = renderer.bindGroup
-        const bindGroup1 = renderer.bindGroup1
-        const bindGroup2 = renderer.bindGroup2
+        const spriteBindGroup = renderer.spriteBindGroup
+        const tileBindGroup1 = renderer.tileBindGroup1
+        const tileBindGroup2 = renderer.tileBindGroup2
         const triangleMesh = renderer.triangleMesh
 
         const elapsed = performance.now()
@@ -66,16 +65,16 @@ export default function rendererSystem (world) {
         renderpass.setVertexBuffer(0, triangleMesh.buffer)
 
         // common stuff; the transform data and the sprite texture
-        renderpass.setBindGroup(1, bindGroup)
+        renderpass.setBindGroup(1, spriteBindGroup)
 
         // tile layer 1
-        renderpass.setBindGroup(0, bindGroup2)
+        renderpass.setBindGroup(0, tileBindGroup2)
         // vertexCount, instanceCount, baseVertexIdx, baseInstanceIdx
         renderpass.draw(6, 1, 0, 0)
 
 
         // tile layer 2
-        renderpass.setBindGroup(0, bindGroup1)
+        renderpass.setBindGroup(0, tileBindGroup1)
         // vertexCount, instanceCount, baseVertexIdx, baseInstanceIdx
         renderpass.draw(6, 1, 0, 1)
 
