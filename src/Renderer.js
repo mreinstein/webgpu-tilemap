@@ -26,7 +26,7 @@ export async function createRenderer (canvas) {
     const shader = await fetchShader('/src/shaders.wgsl')
 
     const uniformBuffer = device.createBuffer({
-        size: 40, // in bytes
+        size: 32 + (16 * 32), // in bytes.  32 for common data + (32 max tile layers * 16 bytes per tile layer)
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
     })
 
@@ -70,7 +70,7 @@ export async function createRenderer (canvas) {
         ]
     })
 
-    const bindGroupLayout = device.createBindGroupLayout({
+    const tileBindGroupLayout = device.createBindGroupLayout({
         entries: [
             {
                 binding: 0,
@@ -86,7 +86,7 @@ export async function createRenderer (canvas) {
     })
 
     const tileBindGroup1 = device.createBindGroup({
-        layout: bindGroupLayout,
+        layout: tileBindGroupLayout,
         entries: [
             {
                 binding: 0,
@@ -100,7 +100,7 @@ export async function createRenderer (canvas) {
     })
 
     const tileBindGroup2 = device.createBindGroup({
-        layout: bindGroupLayout,
+        layout: tileBindGroupLayout,
         entries: [
             {
                 binding: 0,
@@ -114,7 +114,7 @@ export async function createRenderer (canvas) {
     })
 
     const pipelineLayout = device.createPipelineLayout({
-        bindGroupLayouts: [ bindGroupLayout, spriteBindGroupLayout ]
+        bindGroupLayouts: [ tileBindGroupLayout, spriteBindGroupLayout ]
     })
 
     const pipeline = device.createRenderPipeline({
@@ -165,17 +165,14 @@ export async function createRenderer (canvas) {
         format,
 
         // pipeline objects
+        pipeline,
         uniformBuffer,
         spriteBindGroup,   // sprite texture, transform ubo
         tileBindGroup1,  // tile layer 1
-        tileBindGroup2,  // tile layer 2
-        pipeline,
+        tileBindGroup2,  // tile layer 2  
 
         // assets
         triangleMesh,
-        spritesMaterial,
-        tilesMaterial,
-        tilesMaterial2,
 
         // used in the color attachments of renderpass
         clearValue: { r: 0.5, g: 0.0, b: 0.25, a: 1.0 },

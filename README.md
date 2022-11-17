@@ -9,8 +9,7 @@ You can see this running at https://webgpu-tilemap.vercel.app/
 
 ## todo
 * handle browser window resizes
-* move `scrollScale` to instance data
-* move `inverseSpriteTextureSize` to instance data
+* consider adding tile extrusion
 
 
 ## references

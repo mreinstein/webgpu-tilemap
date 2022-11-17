@@ -4,7 +4,7 @@ import Game from './Game.js'
 export default function rendererSystem (world) {
     
     // tmp variables that are re-used to avoid allocating more memory each frame
-    const buf = new Float32Array(10)
+    const buf = new Float32Array(8 + (4 * 32))
 
 
     const onUpdate = function (dt) {
@@ -34,17 +34,31 @@ export default function rendererSystem (world) {
         buf[0] = Math.floor(x * tileScale)  // viewoffset[0] 
         buf[1] =  Math.floor(y * tileScale) // viewOffset[1]
 
+
+        // TODO: everything after buf[2] doesn't need to be updated every frame
+
         buf[2] = 800 / tileScale            // viewportSize[0]
         buf[3] = 600 / tileScale            // viewportSize[1]
-        buf[4] = 1/42                       // inverseTileTextureSize[0]
-        buf[5] = 1/34                       // inverseTileTextureSize[1]
+    
+        buf[4] = 1/128                      // inverseSpriteTextureSize[0]
+        buf[5] = 1/128                      // inverseSpriteTextureSize[1]
+        buf[6] = tileSize
+        buf[7] = 1.0 / tileSize             // inverseTileSize
 
-        buf[6] = 1/128                      // inverseSpriteTextureSize[0]
-        buf[7] = 1/128                      // inverseSpriteTextureSize[1]
-        buf[8] = tileSize
-        buf[9] = 1.0 / tileSize             // inverseTileSize
+        // tile layer 1 instance data
+        buf[8] = 0.6                        // scrollScale[0]
+        buf[9] = 0.6                        // scrollScale[1]
+        buf[10] = 1/2                       // inverseTileTextureSize[0]
+        buf[11] = 1/2                       // inverseTileTextureSize[1]
 
-        device.queue.writeBuffer(uniformBuffer, 0, buf, 0, 10)
+        // tile layer 2 instance data
+        buf[12] = 1.0                        // scrollScale[0]
+        buf[13] = 1.0                        // scrollScale[1]
+        buf[14] = 1/42                       // inverseTileTextureSize[0]
+        buf[15] = 1/34                       // inverseTileTextureSize[1]
+    
+
+        device.queue.writeBuffer(uniformBuffer, 0, buf, 0, 16)
 
         const commandEncoder = device.createCommandEncoder()
         const textureView = context.getCurrentTexture().createView()

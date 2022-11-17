@@ -1,10 +1,19 @@
 struct TransformData {
 	viewOffset: vec2<f32>,
 	viewportSize: vec2<f32>,
-	inverseTileTextureSize: vec2<f32>,
 	inverseSpriteTextureSize: vec2<f32>,
 	tileSize: f32,
-	inverseTileSize: f32
+	inverseTileSize: f32,
+	tileLayers: array<TileLayer, 32>,
+};
+
+struct TileLayer {
+	scrollScale: vec2<f32>,
+	inverseTileTextureSize: vec2<f32>
+};
+
+struct TileLayersBuffer {
+  models: array<TileLayer>,
 };
 
 // individual tile texture
@@ -31,19 +40,14 @@ fn vs_main (@builtin(instance_index) i_id : u32,
 
 	var output : Fragment;
 
-	var scrollScale : vec2<f32>;
-
-	if (i_id == 0) {
-		scrollScale = vec2<f32>(0.6, 0.6);
-	} else {
-		scrollScale = vec2<f32>(1.0, 1.0);
-	}
+	var inverseTileTextureSize = transformUBO.tileLayers[i_id].inverseTileTextureSize;
+	var scrollScale = transformUBO.tileLayers[i_id].scrollScale;
 
 	var viewOffset : vec2<f32> = transformUBO.viewOffset * scrollScale;
 
 	// from Brandon's webgl-tile shader
 	output.PixelCoord = (vertexTexCoord * transformUBO.viewportSize) + viewOffset;
-	output.TexCoord = output.PixelCoord * transformUBO.inverseTileTextureSize * transformUBO.inverseTileSize;
+	output.TexCoord = output.PixelCoord * inverseTileTextureSize * transformUBO.inverseTileSize;
     output.Position = vec4<f32>(vertexPosition, 0.0, 1.0);
 
 	return output;
@@ -55,9 +59,6 @@ fn fs_main (@location(0) TexCoord: vec2<f32>, @location(1) PixelCoord: vec2<f32>
 	// from Brandon's webgl-tile shader
 	var tile: vec4<f32> = textureSample(tileTexture, tileSampler, TexCoord);
 
-	// TODO: this throws a console warning, "control flow depends on non-uniform value"
-	// I assume this is just letting us know that branching based on some unpredictable input value
-	// might be a serious performance pit?
 	if (tile.x == 1.0 && tile.y == 1.0) {
 		discard;
 	}

@@ -49,6 +49,7 @@ export async function createMaterial (device, url) {
     return {
         texture,
         view,
-        sampler
+        sampler,
+        imageData
     }
 }
