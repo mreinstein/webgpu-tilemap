@@ -35,7 +35,7 @@ export default function rendererSystem (world) {
         buf[1] =  Math.floor(y * tileScale) // viewOffset[1]
 
 
-        // TODO: everything after buf[2] doesn't need to be updated every frame
+        // TODO: everything after buf[1] doesn't need to be updated every frame
 
         buf[2] = 800 / tileScale            // viewportSize[0]
         buf[3] = 600 / tileScale            // viewportSize[1]
@@ -62,7 +62,6 @@ export default function rendererSystem (world) {
 
         const commandEncoder = device.createCommandEncoder()
         const textureView = context.getCurrentTexture().createView()
-
 
         const renderpass = commandEncoder.beginRenderPass({
             colorAttachments: [

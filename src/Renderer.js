@@ -23,7 +23,7 @@ export async function createRenderer (canvas) {
         createMaterial(device, 'assets/spelunky1.png'),
     ])
 
-    const shader = await fetchShader('/src/shaders.wgsl')
+    const shader = await fetchShader('/src/tile.wgsl')
 
     const uniformBuffer = device.createBuffer({
         size: 32 + (16 * 32), // in bytes.  32 for common data + (32 max tile layers * 16 bytes per tile layer)
