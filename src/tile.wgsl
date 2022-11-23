@@ -63,7 +63,12 @@ fn fs_main (@location(0) TexCoord: vec2<f32>, @location(1) PixelCoord: vec2<f32>
 		discard;
 	}
 
+	// add extruded tile space to the sprite offset. assumes 1 px extruded around each tile
+	var extrudeOffset : vec2<f32>;
+	extrudeOffset[0] = floor(tile.x * 256.0) * 2 + 1;
+	extrudeOffset[1] = floor(tile.y * 256.0) * 2 + 1;
+
     var spriteOffset : vec2<f32> = floor(tile.xy * 256.0) * transformUBO.tileSize;
 	var spriteCoord : vec2<f32> = PixelCoord % transformUBO.tileSize;
-	return textureSample(spriteTexture, spriteSampler, (spriteOffset + spriteCoord) * transformUBO.inverseSpriteTextureSize);
+	return textureSample(spriteTexture, spriteSampler, (extrudeOffset + spriteOffset + spriteCoord) * transformUBO.inverseSpriteTextureSize);
 }

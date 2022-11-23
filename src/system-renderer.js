@@ -24,9 +24,7 @@ export default function rendererSystem (world) {
         const x = (Math.sin(elapsed / 2000) * 0.5 + 0.5) * 128
         const y = (Math.sin(elapsed / 5000) * 0.5 + 0.5) * 170
 
-        const tileScale = 2
-
-        //const layer = { scrollScaleX: 0.6, scrollScaleY: 0.6 }
+        const tileScale = 2.0
 
         const tileSize = 16.0
 
@@ -40,8 +38,8 @@ export default function rendererSystem (world) {
         buf[2] = 800 / tileScale            // viewportSize[0]
         buf[3] = 600 / tileScale            // viewportSize[1]
     
-        buf[4] = 1/128                      // inverseSpriteTextureSize[0]
-        buf[5] = 1/128                      // inverseSpriteTextureSize[1]
+        buf[4] = 1/144                      // inverseSpriteTextureSize[0]
+        buf[5] = 1/144                      // inverseSpriteTextureSize[1]
         buf[6] = tileSize
         buf[7] = 1.0 / tileSize             // inverseTileSize
 

@@ -18,7 +18,7 @@ export async function createRenderer (canvas) {
     const triangleMesh = createTriangleMesh(device)
 
     const [ spritesMaterial, tilesMaterial, tilesMaterial2 ] = await Promise.all([
-        createMaterial(device, 'assets/spelunky-tiles.png'),
+        createMaterial(device, 'assets/spelunky-tiles-extruded.png'),
         createMaterial(device, 'assets/spelunky0.png'),
         createMaterial(device, 'assets/spelunky1.png'),
     ])
