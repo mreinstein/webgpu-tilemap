@@ -26,7 +26,7 @@ export async function createRenderer (canvas) {
     const shader = await fetchShader('/src/tile.wgsl')
 
     const uniformBuffer = device.createBuffer({
-        size: 32 + (16 * 32), // in bytes.  32 for common data + (32 max tile layers * 16 bytes per tile layer)
+        size: 32 + (32 * 16), // in bytes.  32 for common data + (32 max tile layers * 16 bytes per tile layer)
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
     })
 
@@ -74,7 +74,7 @@ export async function createRenderer (canvas) {
         entries: [
             {
                 binding: 0,
-                visibility: GPUShaderStage.FRAGMENT,
+                visibility: GPUShaderStage.VERTEX | GPUShaderStage.FRAGMENT,
                 texture:  { }
             },
             {

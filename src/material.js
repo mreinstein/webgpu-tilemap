@@ -41,7 +41,7 @@ export async function createMaterial (device, url) {
         magFilter: 'nearest',
         minFilter: 'nearest',
         mipmapFilter: 'nearest',
-        maxAnisoptropy: 1
+        maxAnisotropy: 1
     }
 
     const sampler = device.createSampler(samplerDescriptor)
